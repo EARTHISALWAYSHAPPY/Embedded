@@ -1,4 +1,3 @@
 .vscode
-Switch_led/.gitignore
-Multi-task/.gitignore
-test
+src/ Switch_led/.gitignore
+src/ Multi-task/.gitignore
