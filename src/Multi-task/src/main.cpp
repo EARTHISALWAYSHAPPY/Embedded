@@ -17,7 +17,7 @@ int main()
     {
         Count8 = TCNT0;
         Count16 = TCNT1;
-        if (!(PORTD & (1 << PD4)) && (Count8 > 156))
+        if (!(PORTD & (1 << PD4)) && (Count8 > 156)) 
         {
             PORTD |= (1 << PD4);
             TCNT0 = 0;
