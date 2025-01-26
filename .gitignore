@@ -3,3 +3,4 @@ src/Switch_led/.gitignore
 src/Multi-task/.gitignore
 src/TestForCase_InMidExam/.gitignore
 src/Lab1_LED_Traffic_Light/.gitignore
+src/LAB2_60Sec.Timer/.gitignore
