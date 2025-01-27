@@ -1,37 +1,25 @@
 #include <avr/io.h>
+#define F_CPU 16000000UL // Frequency: 4 MHz
 
-#define F_CPU 4000000UL // Frequency: 4 MHz
 #define sw1 PD2
 #define sw2 PD3
 #define led1 PD4
 #define led2 PD5
 #define led3 PD6
-#define time_for_check 78 
-#define ten_second 39062  
 
-uint16_t count_time_work = 0;
-uint8_t count_time_start_reset = 0;
+#define one_second_for_count 62500
 uint8_t count_num = 0;
 bool work = false;
 
 void Setpin()
 {
   // set sw1, sw2, led1(red), led2(yellow), led3(green)
-  DDRD = (DDRD & ~((1 << sw1) | (1 << sw2))) | ((1 << led1) | (1 << led2) | (1 << led3));
-
-  TCCR0A = 0x00; 
-  TCCR0B = 0x05; 
-  TCNT0 = 0;    
-
-  TCCR1A = 0x00; 
-  TCCR1B = 0x05; 
-  TCNT1 = 0;     
-}
-
-void time_zero()
-{ 
-  count_time_work = 0;
-  TCNT1 = 0;   
+  DDRD |= ((1 << led1) | (1 << led2) | (1 << led3));
+  DDRD &= ~((1 << sw1) | (1 << sw2));
+  // use timer1
+  TCCR1A = 0x00;
+  TCCR1B = 0x04; // 256 prescale
+  TCNT1 = 0;
 }
 
 void off_led()
@@ -41,69 +29,68 @@ void off_led()
 
 void start()
 {
-  if (!(PIND & (1 << sw1)) && (count_time_start_reset >= time_for_check)) 
+  if (!(PIND & (1 << sw1)))
   {
     work = true;
   }
 }
 
+void counting()
+{
+  if ((work == true) && (TCNT1 > one_second_for_count))
+  {
+    count_num += 1;
+    TCNT1 = 0;
+  }
+}
+
 void binary()
 {
-  if (work == true)
+  switch (count_num)
   {
-    count_time_work = TCNT1;
-    if ((count_num <= 7) && (count_time_work >= ten_second)) 
+  case 0:
+    off_led();
+    break;
+  case 10:
+    off_led();
+    PORTD |= 0b01000000;
+    break;
+  case 20:
+    off_led();
+    PORTD |= 0b00100000;
+    break;
+  case 30:
+    off_led();
+    PORTD |= 0b01100000;
+    break;
+  case 40:
+    off_led();
+    PORTD |= 0b00010000;
+    break;
+  case 50:
+    off_led();
+    PORTD |= 0b01010000;
+    break;
+  case 60:
+    off_led();
+    PORTD |= 0b01110000;
+    break;
+  default:
+    if (count_num > 60)
     {
       off_led();
-      switch (count_num)
-      {
-      case 0:
-        off_led();
-        count_num++;
-       
-        break;
-      case 1:
-        PORTD |= 0b01000000;
-        count_num++;
-       
-        break;
-      case 2:
-        PORTD |= 0b00100000;
-        count_num++;
-       
-        break;
-      case 3:
-        PORTD |= 0b01100000;
-        count_num++;
-        
-        break;
-      case 4:
-        PORTD |= 0b00010000;
-        count_num++;
-        
-        break;
-      case 5:
-        PORTD |= 0b01010000;
-        count_num++;
-        
-        break;
-      case 6:
-        PORTD |= 0b01110000;
-      default:
-        break;
-      }
-      time_zero();
+      PORTD |= 0b01110000;
     }
+    break;
   }
 }
 
 void reset()
 {
-  if (!(PIND & (1 << sw2)) && (count_time_start_reset >= time_for_check)) 
+  if (!(PIND & (1 << sw2)))
   {
-    time_zero();
-    count_num = 0;
     work = false;
+    count_num = 0;
     off_led();
   }
 }
@@ -111,11 +98,11 @@ void reset()
 int main()
 {
   Setpin();
-  while (1)
+  while (true)
   {
-    count_time_start_reset = TCNT0; 
-    start();                        
-    binary();                      
-    reset();                      
+    start();
+    reset();
+    counting();
+    binary();
   }
 }
