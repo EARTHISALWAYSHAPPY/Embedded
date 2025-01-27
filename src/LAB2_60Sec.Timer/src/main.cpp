@@ -1,6 +1,5 @@
 #include <avr/io.h>
 #define F_CPU 16000000UL // Frequency: 4 MHz
-#include <Arduino.h>
 #define sw1 PD2
 #define sw2 PD3
 #define led1 PD4
@@ -97,11 +96,9 @@ void reset()
 
 int main()
 {
-  Serial.begin(9600);
   Setpin();
   while (true)
   {
-    Serial.println(count_num);
     start();
     reset();
     counting();
