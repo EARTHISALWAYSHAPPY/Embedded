@@ -1,5 +1,5 @@
 #include <avr/io.h>
-#define F_CPU 16000000UL // Frequency: 4 MHz
+#define F_CPU 16000000UL // Frequency: 16 MHz
 #define sw1 PD2
 #define sw2 PD3
 #define led1 PD4
