@@ -16,7 +16,7 @@ bool work = false;
 
 void Setpin()
 {
-  // ตั้งค่า sw1, sw2, led1(red), led2(yellow), led3(green)
+  // set sw1, sw2, led1(red), led2(yellow), led3(green)
   DDRD = (DDRD & ~((1 << sw1) | (1 << sw2))) | ((1 << led1) | (1 << led2) | (1 << led3));
 
   TCCR0A = 0x00; 
