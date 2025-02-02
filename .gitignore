@@ -1,8 +1,0 @@
-.gitignore
-.vscode
-src/Example&Test/Switch_led/.gitignore
-src/Example&Test/Multi-task/.gitignore
-src/Example&Test/TestForCase_InMidExam/.gitignore
-src/Lab&Task/Lab1_LED_Traffic_Light/.gitignore
-src/Lab&Task/LAB2_60Sec.Timer/.gitignore
-src/Lab&Task/Interrupt_assign1/.gitignore
