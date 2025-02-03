@@ -14,7 +14,7 @@ void serial_putc(char data)
   char busy;
   do
   { 
-    // Check trabsmit data complete?
+    // Check data register empty?
     busy = UCSR0A & 0b00100000;
   } while (busy == 0);
   UDR0 = data;
