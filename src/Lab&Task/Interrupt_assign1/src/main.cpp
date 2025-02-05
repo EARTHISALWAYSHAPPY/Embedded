@@ -23,7 +23,7 @@ void Setting()
 
   TCCR1A = 0x00;
   TCCR1B = 0x05;
-  
+
   PORTB |= (1 << led_red); // default led_red on
 }
 void clear()
@@ -34,7 +34,7 @@ ISR(INT0_vect)
 {
   clear();
   PORTB |= (1 << led_green);
-  TIMSK1 = 1; //enable timer interrupt
+  TIMSK1 = 1; // enable timer interrupt
   TCNT1 = four_sec;
 }
 ISR(TIMER1_OVF_vect)
@@ -42,13 +42,14 @@ ISR(TIMER1_OVF_vect)
   if (PORTB & (1 << led_green))
   {
     clear();
-    PORTB |= (1<<led_yellow);
+    PORTB |= (1 << led_yellow);
     TCNT1 = one_sec;
   }
-  else if(PORTB & (1<<led_yellow)){
+  else if (PORTB & (1 << led_yellow))
+  {
     clear();
-    PORTB |= (1<<led_red);
-    TIMSK1 = 1; //disable timer interrupt
+    PORTB |= (1 << led_red);
+    TIMSK1 = 1; // disable timer interrupt
   }
 }
 
@@ -60,8 +61,3 @@ int main()
   {
   }
 }
-// 1.เริ่มต้นให้ไฟสีแดงติด
-// 2.ถ้ามีการกดปุ่มให้เปลี่ยนเป็นสีเขียวนาน 4 วินาที
-// 3.จากนั้นเปลี่ยนเป็นสีเหลือง 1 วินาที
-// 4.จากนั้นเปลี่ยนกลับเป็นสีแดง
-// 5.ให้ใช้ External Interrupt และ Timer1 Interrupt เท่านั้น
