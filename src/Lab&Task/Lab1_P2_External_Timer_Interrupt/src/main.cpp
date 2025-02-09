@@ -16,7 +16,7 @@ bool dir = 0;
 uint8_t speed = 0, color = 0;
 // speed : 0 --> 1 --> 2 --> 3 --> 4 --> 0 (+ 1:200 ms)
 // color : red(0) , yellow(1) , green(2)
-uint16_t speed_use = 200, timer;
+uint16_t speed_use = 200;
 char speed_text[20];
 
 void setting_port()
@@ -34,6 +34,7 @@ void setting_interrupt()
   TCCR1A = 0b00000000;
   TCCR1B = 0b00000101; // prescale 1024
   TIMSK1 = 0b00000001;
+  TCNT1 = 62410; // default 200 ms
 }
 
 void serial_begin(int baudrate)
@@ -113,9 +114,8 @@ ISR(INT1_vect) // for speed : 0 --> 1 --> 2 --> 3 --> 4 --> 0
 }
 ISR(TIMER1_OVF_vect)
 {
-  float time_sec = speed_use / 1000.0;
-  timer = 65535 - (F_CPU / 1024) * time_sec;
-  TCNT1 = timer;
+  float time_sec = (F_CPU / 1024.0) * (speed_use / 1000.0);
+  TCNT1 = 65535 - time_sec;
 
   clear();
   clear();
