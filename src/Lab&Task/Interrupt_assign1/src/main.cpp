@@ -49,7 +49,7 @@ ISR(TIMER1_OVF_vect)
   {
     clear();
     PORTB |= (1 << led_red);
-    TIMSK1 = 1; // disable timer interrupt
+    TIMSK1 = 0; // disable timer interrupt
   }
 }
 
