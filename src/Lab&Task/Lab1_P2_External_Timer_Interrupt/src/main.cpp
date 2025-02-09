@@ -6,6 +6,12 @@
 #define INT1_vect _VECTOR(2)
 #define TIMER1_OVF_vect _VECTOR(13)
 
+// variable:
+bool dir = 0;
+uint8_t speed = 0, color = 0;
+// speed : 0-->1-->2-->3-->4-->0 (+ 1:200 ms)
+// color : red(0) , yellow(1) , green(2)
+
 void setting_interrupt()
 {
   ///////////////
