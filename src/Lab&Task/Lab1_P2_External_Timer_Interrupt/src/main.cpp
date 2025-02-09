@@ -126,12 +126,15 @@ ISR(TIMER1_OVF_vect)
     {
     case 0:
       PORTD |= (1 << pin_red);
+      color += 1;
       break;
     case 1:
       PORTD |= (1 << pin_yellow);
+      color += 1;
       break;
     case 2:
       PORTD |= (1 << pin_green);
+      color = 0;
       break;
     }
     break;
@@ -140,17 +143,19 @@ ISR(TIMER1_OVF_vect)
     {
     case 0:
       PORTD |= (1 << pin_green);
+      color += 1;
       break;
     case 1:
       PORTD |= (1 << pin_yellow);
+      color += 1;
       break;
     case 2:
       PORTD |= (1 << pin_red);
+      color = 0;
       break;
     }
     break;
   }
-  color = (color + 1) % 3;
 }
 
 int main()
