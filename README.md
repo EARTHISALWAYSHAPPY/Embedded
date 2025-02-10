@@ -1,5 +1,9 @@
 # Embedded System KMITL 01046714
 
+## Documentation📄
+
+- [Language Reference](https://docs.arduino.cc/language-reference/?_gl=1*n81774*_up*MQ..*_ga*MjAwMjgzMjg5OC4xNzM5MTkwMjk2*_ga_NEXN8H46L5*MTczOTE5MDI5NC4xLjEuMTczOTE5MDI5OS4wLjAuOTU5MDUyMjI.#functions)
+
 ## Recommend command👍
 
 ### Part Interrupt :
@@ -108,4 +112,6 @@ Serial_puts :
   }
 }
 ```
+
+
 
