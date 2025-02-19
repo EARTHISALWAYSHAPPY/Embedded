@@ -11,7 +11,7 @@ void spi_init()
 {
     DDRB = (1 << SCK) | (1 << MOSI) | (1 << CS); // Set MOSI, SCK, Reset as Output
     SPSR = 0b00000001;                           //
-    SPCR = 0b01010000;                           // Enable SPI, Set as Master, Clock 10 MHz.
+    SPCR = 0b01010000;                           // Enable SPI, Set as Master, Clock.
 }
 void spi_putc(char data)
 {
@@ -34,102 +34,41 @@ void max7219_wr(char addr, char data)
 }
 void max7219_config()
 {
-    max7219_wr(0x0C, 0);  // Shutdown
-    max7219_wr(0x09, 0);  // decode mode
-    max7219_wr(0x0A, 15); // light intensity
-    max7219_wr(0x0B, 7);  // scan limit
-    max7219_wr(0x0C, 1);  // turn ON
+    max7219_wr(0x0C, 0);    // Shutdown
+    max7219_wr(0x09, 0x00); // decode mode
+    max7219_wr(0x0A, 0x00); // light intensity
+    max7219_wr(0x0B, 0x07); // scan limit
+    max7219_wr(0x0C, 1);    // turn ON
 }
-const uint8_t K[8] = {
-    0b11000111,
-    0b11001111,
-    0b11011100,
-    0b11111000,
-    0b11111000,
-    0b11011100,
-    0b11001111,
-    0b11000111
-};
-const uint8_t U[8] = {
-    0b11000011,
-    0b11000011,
-    0b11000011,
-    0b11000011,
-    0b11000011,
-    0b11111111,
-    0b01111110,
-    0b00111100
-};
-const uint8_t N[8] = {
-    0b10000011,
-    0b11100011,
-    0b11110011,
-    0b11111111,
-    0b11111111,
-    0b11001111,
-    0b11000111,
-    0b11000001
-};
-const uint8_t A[8] = {
-    0b00111100,
-    0b01111110,
-    0b11000011,
-    0b11000011,
-    0b11111111,
-    0b11111111,
-    0b11000011,
-    0b11000011
-};
-const uint8_t O[8] = {
-    0b00011000,
-    0b00111100,
-    0b01111110,
-    0b11100111,
-    0b11100111,
-    0b01111110,
-    0b00111100,
-    0b00011000
-};
+const byte text_kunanon[7][8] = {
+    {0xC7, 0xCF, 0xDC, 0xF8, 0xF8, 0xDC, 0xCF, 0xC7},
+    {0xC3, 0xC3, 0xC3, 0xC3, 0xC3, 0xFF, 0x7E, 0x3C},
+    {0x83, 0xE3, 0xF3, 0xFF, 0xFF, 0xCF, 0xC7, 0xC1},
+    {0x3C, 0x7E, 0xC3, 0xC3, 0xFF, 0xFF, 0xC3, 0xC3},
+    {0x83, 0xE3, 0xF3, 0xFF, 0xFF, 0xCF, 0xC7, 0xC1},
+    {0x18, 0x3C, 0x7E, 0xE7, 0xE7, 0x7E, 0x3C, 0x18},
+    {0x83, 0xE3, 0xF3, 0xFF, 0xFF, 0xCF, 0xC7, 0xC1}};
+
 int main()
 {
     spi_init();
     max7219_config();
     while (1)
     {
-        for (int row = 0; row < 8; row++)
+        max7219_wr(0x0C, 0);
+        _delay_ms(1000);
+        max7219_wr(0x0C, 1);
+        int temp_count = sizeof(text_kunanon) / sizeof(text_kunanon[0]);
+        for (int text = 0; text < temp_count; text++)
         {
-            max7219_wr(row+1,K[row]);
+            for (int row = 0; row < 8; row++)
+            {
+                max7219_wr(row + 1, text_kunanon[text][row]);
+            }
+            _delay_ms(2000);
         }
-        _delay_ms(2000);
-        for (int row = 0; row < 8; row++)
-        {
-            max7219_wr(row+1,U[row]);
-        }
-        _delay_ms(2000);
-        for (int row = 0; row < 8; row++)
-        {
-            max7219_wr(row+1,N[row]);
-        }
-        _delay_ms(2000);
-        for (int row = 0; row < 8; row++)
-        {
-            max7219_wr(row+1,A[row]);
-        }
-        _delay_ms(2000);
-        for (int row = 0; row < 8; row++)
-        {
-            max7219_wr(row+1,N[row]);
-        }
-        _delay_ms(2000);
-        for (int row = 0; row < 8; row++)
-        {
-            max7219_wr(row+1,O[row]);
-        }
-        _delay_ms(2000);
-        for (int row = 0; row < 8; row++)
-        {
-            max7219_wr(row+1,N[row]);
-        }
-        _delay_ms(2000);
+        // max7219_wr(0x0C, 0);
+        // _delay_ms(100);
+        // max7219_wr(0x0C, 1);
     }
 }
