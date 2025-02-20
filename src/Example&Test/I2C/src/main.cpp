@@ -10,7 +10,7 @@ void i2c_start()
     while (busy==0);
 }
 
-void i2c_stop(void)
+void i2c_stop()
 {
     char busy;
     TWCR = 0b10010100; // TWINT,TWSTO,TWEN;
