@@ -1,5 +1,6 @@
 #include <Arduino.h>
 //////////////////////////////////////////////
+// ADC & UART
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
@@ -10,7 +11,7 @@ int adc_temp;
 float cel, fah;
 char choice, text[10];
 void ADC_init() {
-    ADMUX = 0b01000000; //0 1 : AVcc
+    ADMUX = 0b01000011; //0 1 : AVcc ADC3
     ADCSRA = 0b10000111; // ADC : Enable , Prescale : 128
 }
 int ADC_read(char ch) {
@@ -23,10 +24,11 @@ int ADC_read(char ch) {
     } while (busy != 0);
     return(ADC);
 }
+// UART //
 void Serial_begin(int baudrate) {
     UBRR0 = baudrate; // UBRRn = ( 16x10^6 / (16 x baud rate(38400))) - 1
     UCSR0A = 0b00000000;
-    UCSR0B = 0b10011000;
+    UCSR0B = 0b10011000; // 0b00011000;
     UCSR0C = 0b00000110;
     sei();
 }
@@ -85,6 +87,7 @@ void condition() {
     Serial_puts("Read Temperature in Celsius (1) or Fahrenheit (2): ");
 }
 ISR(UART_RX_vect) {
+    // pin_temp = 3
     adc_temp = ADC_read(pin_temp);
     cel = ((float)adc_temp * 5.0 / 1024.0) * 100.0;
     choice = Serial_getc();

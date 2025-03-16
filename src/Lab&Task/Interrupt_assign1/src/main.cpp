@@ -14,20 +14,23 @@
 #define four_sec 3036
 void Setting()
 {
-  DDRD &= ~(1 << sw); // sw(PD2) : input
+  // DDR B C D
+  DDRD &= ~(1 << sw); // sw(PD2) : input  //0b11111101;
   // led_red(PB0) led_yellow(PB1) led_green(PB2) : output
+  // DDRB |= 0b00000111;
   DDRB |= ((1 << led_red) | (1 << led_yellow) | (1 << led_green));
 
   EICRA = EICRA | 0b00000010; // INT0 failling edge
   EIMSK = 1;
 
   TCCR1A = 0x00;
-  TCCR1B = 0x05;
+  TCCR1B = 0x05; // 0b00000101;
 
   PORTB |= (1 << led_red); // default led_red on
 }
 void clear()
 {
+  PORTB &= 0b11111000;
   PORTB &= ~((1 << led_red) | (1 << led_yellow) | (1 << led_green));
 }
 ISR(INT0_vect)

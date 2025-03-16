@@ -9,7 +9,7 @@ float volt, amp, R;
 char choice, text[10];
 void ADC_init()
 {
-  ADMUX = 0b01000000;  // 0 1 : AVcc , ADC1
+  ADMUX = 0b01000001;  // 0 1 : AVcc , ADC1
   ADCSRA = 0b10000111; // ADC : Enable , Prescale : 128
 }
 int ADC_read(char ch)
