@@ -27,7 +27,7 @@ void spi_putc(char data)
 
 void max7219_wr(char addr, char data)
 {
-    PORTB &= 0b11111011; // SS = 0 do
+    PORTB &= 0b11111011; // SS = 0 do // 0xFB
     spi_putc(addr);
     spi_putc(data);
     PORTB |= 0b00000100; // SS = 1 dont

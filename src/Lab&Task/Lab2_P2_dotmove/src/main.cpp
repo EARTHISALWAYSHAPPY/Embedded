@@ -34,16 +34,16 @@ void spi_putc(char data)
 
 void max7219_wr(char addr, char data)
 {
-    PORTB &= ~(1 << CS); // SS = 0
+    PORTB &= ~(1 << CS); // SS = 0 // 0b11111011;
     spi_putc(addr);
     spi_putc(data);
-    PORTB |= (1 << CS); // SS = 1
+    PORTB |= (1 << CS); // SS = 1 //0b00000100;
 }
 
 void max7219_config()
 {
     max7219_wr(0x0C, 0x00); // Shutdown mode
-    max7219_wr(0x09, 0x00); // Decode mode
+    max7219_wr(0x09, 0x00); // Decode mode (no decode)
     max7219_wr(0x0A, 0x0F); // Intensity max
     max7219_wr(0x0B, 0x07); // Scan limit
     max7219_wr(0x0C, 0x01); // Turn on
