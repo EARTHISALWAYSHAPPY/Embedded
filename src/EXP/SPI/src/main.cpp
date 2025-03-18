@@ -20,7 +20,7 @@ void setting_interrupt()
 
 void spi_init()
 {
-    DDRB = (1 << SCK) | (1 << MOSI) | (1 << CS); // Set MOSI, SCK, CS as Output
+    DDRB |= (1 << SCK) | (1 << MOSI) | (1 << CS); // Set MOSI, SCK, CS as Output
     SPSR = 0b00000001;
     SPCR = 0b01010000; // Enable SPI, Set as Master, Clock.
 }
@@ -61,7 +61,7 @@ ISR(INT0_vect)
     x -= 1;
     if (x < 0)
     {
-        x = 7; // reset 
+        x = 7; // reset
     }
     up_dot();
 }
@@ -70,7 +70,7 @@ ISR(INT1_vect)
     y -= 1;
     if (y < 0)
     {
-        y = 7; // reset 
+        y = 7; // reset
     }
     up_dot();
 }
@@ -85,6 +85,3 @@ int main()
     {
     }
 }
-
-
-
