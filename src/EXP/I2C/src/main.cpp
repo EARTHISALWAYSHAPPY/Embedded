@@ -64,7 +64,6 @@ void i2c_init()
 {
   TWSR |= (1 << TWPS1);
   TWBR = 2;
-  //TWCR |= (1 << TWEN);
 }
 
 void i2c_start()
